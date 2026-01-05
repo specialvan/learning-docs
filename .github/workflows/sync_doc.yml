@@ -1,15 +1,13 @@
-name: Scrape Website to Markdown
+name: Scrape Claude Docs
 
 on:
-  workflow_dispatch: # 支持手动点击按钮触发执行
-  schedule:
-    - cron: '0 0 * * *' # 每天凌晨自动运行一次（可选）
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
-      contents: write # 赋予 Action 推送代码到仓库的权限
+      contents: write
 
     steps:
       - name: Checkout code
@@ -18,21 +16,41 @@ jobs:
       - name: Install Pandoc
         run: |
           sudo apt-get update
-          sudo apt-get install -y pandoc
+          sudo apt-get install -y pandoc curl
 
-      - name: Fetch and Convert to Markdown
+      - name: Fetch and Convert All Pages
         run: |
-          # 这里是你想要抓取的链接
-          TARGET_URL="https://claudecode.tangshuang.net"
+          # 定义基础 URL
+          BASE_URL="https://claudecode.tangshuang.net"
           
-          # 使用 pandoc 抓取网页并转换为 markdown
-          # --standalone 保证生成完整文档，-t gfm 生成 GitHub 风格的 Markdown
-          pandoc "$TARGET_URL" -f html -t gfm -o CLAUDE_CODE_DOC.md
+          # 定义需要抓取的页面路径列表
+          # 包含：首页、安装指南、命令参考、配置说明、常见问题
+          pages=("" "guide" "commands" "config" "faq")
+          
+          for page in "${pages[@]}"; do
+            # 处理文件名：首页存为 index，其他按原名存
+            FILE_NAME="Claude_${page:-index}.md"
+            TARGET="$BASE_URL/$page"
+            
+            echo "正在抓取: $TARGET"
+            
+            # 使用 curl 先模拟浏览器抓取 HTML，再交给 pandoc 转换
+            # -L 跟踪重定向，-s 静默模式，-H 伪装浏览器 Header 防止被拦截
+            curl -L -s -H "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36" "$TARGET" > temp.html
+            
+            # 转换为 Markdown
+            pandoc temp.html -f html -t gfm -o "$FILE_NAME"
+            
+            # 清理临时文件
+            rm temp.html
+            
+            echo "完成: $FILE_NAME"
+          done
 
       - name: Commit and Push
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add CLAUDE_CODE_DOC.md
-          # 检查是否有文件更新，防止空提交报错
-          git diff --quiet && git diff --staged --quiet || (git commit -m "Update doc from source" && git push)
+          git add *.md
+          git commit -m "Update all doc pages" || exit 0
+          git push
