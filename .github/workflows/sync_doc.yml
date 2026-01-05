@@ -1,56 +1,14 @@
-name: Scrape Claude Docs
-
-on:
-  workflow_dispatch:
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Install Pandoc
+- name: Fetch Original Markdown Files
         run: |
-          sudo apt-get update
-          sudo apt-get install -y pandoc curl
-
-      - name: Fetch and Convert All Pages
-        run: |
-          # 定义基础 URL
-          BASE_URL="https://claudecode.tangshuang.net"
+          # 定义源码仓库的 Raw 文件基础路径
+          # 注意：这是从源码仓库直接下载，不会受网页动态加载影响
+          RAW_URL="https://raw.githubusercontent.com/tangshuang/claudecode/main/docs"
           
-          # 定义需要抓取的页面路径列表
-          # 包含：首页、安装指南、命令参考、配置说明、常见问题
-          pages=("" "guide" "commands" "config" "faq")
+          # 定义你想要的文件列表（根据该项目结构）
+          files=("README.md" "guide.md" "commands.md" "config.md" "faq.md")
           
-          for page in "${pages[@]}"; do
-            # 处理文件名：首页存为 index，其他按原名存
-            FILE_NAME="Claude_${page:-index}.md"
-            TARGET="$BASE_URL/$page"
-            
-            echo "正在抓取: $TARGET"
-            
-            # 使用 curl 先模拟浏览器抓取 HTML，再交给 pandoc 转换
-            # -L 跟踪重定向，-s 静默模式，-H 伪装浏览器 Header 防止被拦截
-            curl -L -s -H "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36" "$TARGET" > temp.html
-            
-            # 转换为 Markdown
-            pandoc temp.html -f html -t gfm -o "$FILE_NAME"
-            
-            # 清理临时文件
-            rm temp.html
-            
-            echo "完成: $FILE_NAME"
+          for file in "${files[@]}"; do
+            echo "正在同步: $file"
+            # 使用 -f 确保如果 404 了不会生成空文件
+            curl -L -f "$RAW_URL/$file" -o "Claude_$file" || echo "$file 不存在，跳过"
           done
-
-      - name: Commit and Push
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add *.md
-          git commit -m "Update all doc pages" || exit 0
-          git push
