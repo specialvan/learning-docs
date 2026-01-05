@@ -1,0 +1,38 @@
+name: Scrape Website to Markdown
+
+on:
+  workflow_dispatch: # 支持手动点击按钮触发执行
+  schedule:
+    - cron: '0 0 * * *' # 每天凌晨自动运行一次（可选）
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # 赋予 Action 推送代码到仓库的权限
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Pandoc
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y pandoc
+
+      - name: Fetch and Convert to Markdown
+        run: |
+          # 这里是你想要抓取的链接
+          TARGET_URL="https://claudecode.tangshuang.net"
+          
+          # 使用 pandoc 抓取网页并转换为 markdown
+          # --standalone 保证生成完整文档，-t gfm 生成 GitHub 风格的 Markdown
+          pandoc "$TARGET_URL" -f html -t gfm -o CLAUDE_CODE_DOC.md
+
+      - name: Commit and Push
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add CLAUDE_CODE_DOC.md
+          # 检查是否有文件更新，防止空提交报错
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Update doc from source" && git push)
