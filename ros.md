@@ -39,4 +39,50 @@
     * [google-research/rlds](https://github.com/google-research/rlds)
     * **重点**：学习标准化机器人轨迹数据的存储格式。
 * **周四：视觉特征对齐 CLIP**
-    * [openai/CLIP](https://github.
+    * [openai/CLIP](https://github.com/openai/CLIP)
+    * **重点**：理解图像和文本如何在同一个特征空间匹配。
+* **周五：微调逻辑与实战**
+    * [huggingface/lerobot](https://github.com/huggingface/lerobot)
+    * **重点**：看 `examples/` 文件夹下如何加载预训练权重。
+
+---
+
+## 🟧 第三周：动作策略 (Action Strategy)
+**目标**：研究机器人具体是怎么动得“像人一样”丝滑。
+
+* **周一：模仿学习 (BC)**
+    * [ARISE-Initiative/robomimic](https://github.com/ARISE-Initiative/robomimic)
+    * **重点**：看 Behavior Cloning 算法如何从人类演示中学习。
+* **周二：扩散策略 (Diffusion Policy)**
+    * [columbia-ai-robotics/diffusion_policy](https://github.com/columbia-ai-robotics/diffusion_policy)
+    * **重点**：理解去噪生成过程如何让动作更平滑、更稳定。
+* **周三：强化学习 PPO**
+    * [vwxyzjn/cleanrl](https://github.com/vwxyzjn/cleanrl)
+    * **重点**：查阅 `ppo.py` 源码，了解“奖励函数”如何引导机器人。
+* **周四：UMI 手眼协调**
+    * [real-stanford/universal-manipulation-interface](https://github.com/real-stanford/universal-manipulation-interface)
+    * **重点**：看项目如何通过 GoPro 摄像头捕获高精度操作数据。
+* **周五：策略算法综合对比**
+    * 回到 [awesome-embodied-ai](https://github.com/robotics-editing/awesome-embodied-ai) 查看 Policy 部分。
+
+---
+
+## 🟫 第四周：工程落地 (Engineering)
+**目标**：从算法回归到真实的硬件、通讯与系统。
+
+* **周一：ROS 2 核心通讯**
+    * [ros2/ros2](https://github.com/ros2/ros2)
+    * **重点**：理解节点 (Node)、话题 (Topic) 和服务端 (Service) 的交互。
+* **周二：Mobile ALOHA 硬件解析**
+    * [tonyzhaozh/aloha](https://github.com/tonyzhaozh/aloha)
+    * **重点**：查看 `Hardware` 目录下的 3D 打印件和物料清单 (BOM)。
+* **周三：实时系统与控制频率**
+    * 搜索 GitHub 上的 `Preempt-RT` 或 `Control Loop` 讨论。
+    * **重点**：为什么控制循环需要达到 100Hz 甚至 1000Hz。
+* **周四：四足与导航案例**
+    * [ANYbotics/elevation_mapping](https://github.com/ANYbotics/elevation_mapping)
+    * **重点**：研究真实物理世界中的地形测绘与避障。
+* **周五：学习总结报告**
+    * 整理四周的阅读笔记，形成你自己的具身智能知识图谱。
+
+---
