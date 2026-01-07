@@ -1,1 +1,62 @@
-🟢 周一：全局视野与术语对齐目标：分清什么是“具身”（Embodied），什么是“离身”（Disembodied）。重点阅读项目：robotics-editing/awesome-embodied-ai核心任务：阅读 README 中的 Surveys 部分。搞清楚 VLA (Vision-Language-Action) 模型是如何直接从图像输出控制指令的。技术词汇表：Sim-to-Real: 仿真到现实的迁移。Zero-shot Generalization: 零样本泛化（模型没见过这个东西也能操作）。🟡 周二：物理引擎 —— 机器人的“物理定律”目标：理解机器人如何感知碰撞、重力和摩擦力。重点阅读项目：google-research/mujoco文档入口：MuJoCo Documentation (GitHub Pages)核心任务：阅读 Overview 章节。了解 MJCF (MuJoCo XML) 格式，它是如何描述一个球体或一个机械臂的。思考点：为什么仿真环境里的重力 $9.81 m/s^2$ 在现实中可能会让机器人摔倒？🟠 周三：URDF —— 描述机器人的身体目标：学会看机器人的“说明书”。重点阅读项目：ros/urdf实战案例：查看 franka_ros (Panda 机械臂模型)。核心任务：理解 Link (连杆，如小臂) 和 Joint (关节，如手肘) 的父子关系。了解 Visual (看起来的样子) 和 Collision (碰撞计算的样子) 的区别。🔴 周四：并行仿真 —— 疯狂的训练速度目标：了解 NVIDIA 是如何让 1000 个机器人在 1 秒钟内完成 1 天的训练量的。重点阅读项目：NVIDIA-Omniverse/IsaacGymEnvs核心任务：阅读 docs/ 下关于 Reinforcement Learning 的说明。查看 isaacgymenvs/tasks 目录，看看官方提供了哪些预设任务（如：走迷宫、平衡球）。🔵 周五：数据流与周总结目标：理解“感知-决策-执行”的闭环。重点阅读项目：huggingface/lerobot核心任务：看它的 Data Visualization 部分。理解一个动作步（Action Step）包含哪些字段：observation.image, action, reward, next_observation。
+# 📅 具身智能学习进阶：第 2 - 4 周计划
+
+## 🟦 第二周：大脑模型 (Foundation Models)
+**目标**：理解大模型如何成为机器人的“指挥官”。
+
+* **周一：RT-1/RT-2 概念**
+    * [google-research/robotics_transformer](https://github.com/google-research/robotics-transformer)
+    * **重点**：看 README 中的 Model Architecture 描述。
+* **周二：OpenVLA 实战协议**
+    * [openvla/openvla](https://github.com/openvla/openvla)
+    * **重点**：阅读 `Project Website` 链接里的视频演示。
+* **周三：数据格式 RLDS**
+    * [google-research/rlds](https://github.com/google-research/rlds)
+    * **重点**：了解如何记录机器人的每一步（Step）。
+* **周四：视觉对齐 CLIP**
+    * [openai/CLIP](https://github.com/openai/CLIP)
+    * **重点**：理解文字标签是如何对应到图像特征的。
+* **周五：Hugging Face 机器人库**
+    * [huggingface/lerobot](https://github.com/huggingface/lerobot)
+    * **重点**：看 `examples/` 文件夹里的训练脚本。
+
+---
+
+## 🟧 第三周：动作策略 (Action Strategy)
+**目标**：研究机器人具体是怎么动得“像人一样”丝滑。
+
+* **周一：模仿学习基础**
+    * [ARISE-Initiative/robomimic](https://github.com/ARISE-Initiative/robomimic)
+    * **重点**：阅读 `Introduction` 了解行为克隆。
+* **周二：扩散策略 (Diffusion Policy)**
+    * [columbia-ai-robotics/diffusion_policy](https://github.com/columbia-ai-robotics/diffusion_policy)
+    * **重点**：看项目主页的 GIF，对比它与传统算法的区别。
+* **周三：强化学习 PPO**
+    * [vwxyzjn/cleanrl](https://github.com/vwxyzjn/cleanrl)
+    * **重点**：看 `ppo.py` 的代码注释，这是业内最易懂的实现。
+* **周四：UMI 手眼协调**
+    * [real-stanford/universal-manipulation-interface](https://github.com/real-stanford/universal-manipulation-interface)
+    * **重点**：看 Hardware 章节，了解摄像头如何捕捉动作。
+* **周五：算法综合对比**
+    * 回到 [awesome-embodied-ai](https://github.com/robotics-editing/awesome-embodied-ai) 查找对比图表。
+
+---
+
+## 🟫 第四周：工程落地 (Engineering)
+**目标**：了解真实的硬件、系统和通讯。
+
+* **周一：ROS 2 基础架构**
+    * [ros2/ros2](https://github.com/ros2/ros2)
+    * **重点**：搞清楚什么是 Node (节点) 和 Topic (话题)。
+* **周二：ALOHA 硬件结构**
+    * [tonyzhaozh/aloha](https://github.com/tonyzhaozh/aloha)
+    * **重点**：看 `Hardware` 目录下的 3D 打印件和电机清单。
+* **周三：实时系统优化**
+    * 搜索：GitHub 上的 `Preempt-RT` 相关讨论。
+    * **重点**：了解为什么机器人需要高频控制循环。
+* **周四：自主导航案例**
+    * [ANYbotics/elevation_mapping](https://github.com/ANYbotics/elevation_mapping)
+    * **重点**：看四足机器人是如何感知地形凹凸的。
+* **周五：总结与展望**
+    * 写一份学习总结，存入你自己的 GitHub Repo。
+
+---
